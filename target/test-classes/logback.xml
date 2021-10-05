@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %level %magenta(%logger{40}) %msg%n%xException</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="asyncConsoleAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="consoleAppender" />
+    </appender>
+
+    <appender name="uangel-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME}/uangel.log</file>
+        <append>false</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${HOME}/uangel.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %level %magenta(%logger{40}) %msg%n%xException</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="cdr-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME}/cdr.log</file>
+        <append>false</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${HOME}/cdr.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %level %magenta(%logger{40}) %msg%n%xException</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="asyncLogger" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="uangel-appender" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="asyncConsoleAppender"/>
+    </root>
+
+    <logger name="com.uangel" level="INFO" additivity="true">
+        <appender-ref ref="asyncLogger" />
+    </logger>
+
+    <logger name="CDR" level="INFO" additivity="false">
+        <appender-ref ref="cdr-appender" />
+    </logger>
+
+</configuration>
